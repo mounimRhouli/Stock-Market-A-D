@@ -1,120 +1,116 @@
-# Stock Market Anomaly Detection: GME Analysis
+## Stock Market Anomaly Detection
 
-## Project Overview
+Detect anomalies in stock price data (example analysis on GME) using classical and deep-learning methods. This repository contains a Streamlit app (`app.py`) for interactive exploration and a Jupyter notebook (`Anomalies Detection.ipynb`) with the analysis, visualizations, and model comparisons.
 
-
-https://github.com/user-attachments/assets/d1b5c802-1635-44d7-b92c-d341fd908c91
-
-
-This project focuses on detecting anomalies in the stock price data of GameStop (GME) using multiple machine learning techniques. We implement and compare various anomaly detection methods to identify unusual patterns or events in the stock's behavior, providing insights into market dynamics and potential trading opportunities.
+Key ideas:
+- Pull historical price data with `yfinance`
+- Build time-series features (returns, volatility, moving averages, Bollinger Bands)
+- Detect anomalies using Z-score, Isolation Forest, DBSCAN, LSTM-based prediction residuals, and an Autoencoder reconstruction error
+- Visualize and compare model outputs interactively with Plotly inside Streamlit
 
 ## Features
 
-- Data retrieval using yfinance
-- Comprehensive Exploratory Data Analysis (EDA)
-- Implementation of multiple anomaly detection techniques:
-  - Z-Score
-  - Isolation Forest
-  - DBSCAN (Density-Based Spatial Clustering of Applications with Noise)
-  - LSTM (Long Short-Term Memory) Neural Networks
-  - Autoencoder
-- Performance comparison of different methods
-- Interactive Streamlit app for result visualization
+- Data retrieval via `yfinance`
+- EDA: price, volume, returns, volatility, technical indicators
+- Multiple anomaly detection techniques: Z-Score, Isolation Forest, DBSCAN, LSTM, Autoencoder
+- Interactive Streamlit dashboard to explore detected anomalies and compare models
+- Notebook with reproducible analysis and plots
 
-## Installation
+## Tech / Dependencies
+
+Primary libraries used (see `requirements.txt`):
+
+- Python 3.8+
+- streamlit, pandas, numpy
+- plotly, matplotlib, seaborn
+- scikit-learn (IsolationForest, DBSCAN, StandardScaler)
+- yfinance (data retrieval)
+- tensorflow (LSTM / Autoencoder)
+
+## Quick start (Windows PowerShell)
 
 1. Clone the repository:
-   ```
-   git clone https://github.com/yourusername/stock-anomaly-detection.git
-   cd stock-anomaly-detection
-   ```
 
-2. Create a virtual environment (optional but recommended):
-   ```
-   python -m venv venv
-   source venv/bin/activate  # On Windows use `venv\Scripts\activate`
-   ```
+```powershell
+git clone https://github.com/yourusername/Stock-Market-Anomaly-Detection.git
+cd "Stock-Market-Anomaly-Detection"
+```
 
-3. Install required packages:
-   ```
-   pip install -r requirements.txt
-   ```
+2. (Optional) Create and activate a virtual environment:
 
-## Usage
+```powershell
+python -m venv venv
+.\venv\Scripts\Activate.ps1    # PowerShell
+# For cmd.exe: venv\Scripts\activate
+```
 
-1. Run the Jupyter Notebook for detailed analysis:
-   ```
-   jupyter notebook Stock_Anomaly_Detection.ipynb
-   ```
+3. Install dependencies:
 
-2. Launch the Streamlit app:
-   ```
-   streamlit run app.py
-   ```
+```powershell
+pip install -r requirements.txt
+```
 
-## Project Structure
+4. Run the interactive app:
 
-- `Stock_Anomaly_Detection.ipynb`: Main Jupyter notebook containing the analysis
-- `app.py`: Streamlit app for interactive visualization
-- `requirements.txt`: List of required Python packages
-- `data/`: Directory for storing downloaded stock data (if applicable)
-- `models/`: Directory for saving trained models (if applicable)
+```powershell
+streamlit run app.py
+```
 
-## Methodology
+5. Or open and run the analysis notebook:
 
-1. **Data Collection**: Retrieve GME stock data using yfinance library.
-2. **Preprocessing**: Clean data, handle missing values, and calculate additional features (e.g., returns, volatility).
-3. **Exploratory Data Analysis**: Visualize stock price trends, volume, returns, and volatility.
-4. **Anomaly Detection Methods**:
-   - Z-Score: Identify outliers based on standard deviations from the mean.
-   - Isolation Forest: Detect anomalies using isolation in the feature space.
-   - DBSCAN: Cluster data points and identify outliers.
-   - LSTM: Predict stock prices and flag significant deviations as anomalies.
-   - Autoencoder: Learn normal patterns and detect anomalies based on reconstruction error.
-5. **Model Comparison**: Evaluate and compare the performance of each method using precision, recall, and F1-score.
-6. **Visualization**: Create interactive plots to display detected anomalies and compare results.
+```powershell
+jupyter notebook "Anomalies Detection.ipynb"
+```
 
-## Results
+## How to use the Streamlit app
 
-The project provides insights into:
-- Periods of unusual activity in GME stock
-- Effectiveness of different anomaly detection techniques for stock market data
-- Comparative analysis of model performances
+- Enter a ticker symbol (default `GME`) and set the date range in the sidebar.
+- Explore EDA panels (price, MA, Bollinger Bands, returns, volatility, correlation).
+- Inspect anomaly plots for each method (Z-Score, Isolation Forest, DBSCAN, LSTM, Autoencoder).
+- Compare all methods together and view summary statistics showing the number of anomalies detected by each model.
 
-Detailed results and visualizations are available in the Jupyter notebook and Streamlit app.
+Notes: LSTM and Autoencoder model training runs in the app and can take significant time/CPU. Consider using smaller datasets or pre-trained models for a snappier UI.
 
-## Streamlit App Features
+## Notebook
 
-The Streamlit app offers an interactive interface for exploring the anomaly detection results:
+The notebook (`Anomalies Detection.ipynb`) contains step-by-step data preparation, feature engineering, plotting, and model implementations used in the Streamlit app (including code for performance comparison: precision, recall, F1-score).
 
-- Stock data input and date range selection
-- Interactive EDA visualizations
-- Individual plots for each anomaly detection method
-- Combined visualization of all methods' results
-- Performance metrics comparison
-- Summary statistics of detected anomalies
+## Project structure
 
-## Future Work
+- `app.py` — Streamlit app with EDA and anomaly detection visualizations
+- `Anomalies Detection.ipynb` — exploratory notebook and model experiments
+- `requirements.txt` — dependency list
+- `README.md` — this file
 
-- Incorporate additional features (e.g., sentiment analysis, market indicators)
-- Experiment with ensemble methods for improved anomaly detection
-- Extend the analysis to other stocks or financial instruments
-- Implement real-time anomaly detection for live stock data
+## Methodology (brief)
+
+1. Data retrieval with `yfinance`.
+2. Feature engineering: returns, rolling volatility, moving averages, Bollinger Bands, RSI, etc.
+3. Anomaly detection methods implemented:
+   - Z-Score thresholding on price
+   - Isolation Forest on scaled feature vectors
+   - DBSCAN clustering; label -1 as anomaly
+   - LSTM: sequence prediction; anomalies by high prediction MSE
+   - Autoencoder: reconstruction error > percentile threshold
+4. Compare methods using precision/recall/F1 against a combined anomaly label when available.
+
+## Caveats & Tips
+
+- Deep learning models (LSTM/Autoencoder) are resource-intensive; prefer a GPU or smaller data slices for experimentation.
+- Results depend heavily on choice of windows, thresholds, contamination parameter (for IsolationForest), and DBSCAN hyperparameters.
+- Time-series cross-validation and careful labeling are required for robust evaluation in production.
+
+## Suggested next steps / Improvements
+
+- Save trained models to `models/` and load them instead of re-training in the app.
+- Add parameter controls in the Streamlit UI (thresholds, contamination, DBSCAN eps/min_samples, LSTM epochs).
+- Add unit tests for data preprocessing and deterministic model components.
+- Add CI to check dependency compatibility and run lightweight tests.
 
 ## Contributing
 
-Contributions to this project are welcome! Please fork the repository and submit a pull request with your proposed changes.
+Contributions are welcome. Please open an issue to discuss changes or submit a pull request with tests and a clear description of your changes.
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## Acknowledgments
-
-- yfinance library for providing easy access to Yahoo Finance data
-- Streamlit for enabling interactive data visualization
-- The open-source community for the various machine learning libraries used in this project
-
-## Contact
-
-For any queries or discussions related to this project, please open an issue in the GitHub repository.
+This project is made available under the MIT License. See the `LICENSE` file for terms.
