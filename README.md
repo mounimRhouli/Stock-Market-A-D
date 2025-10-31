@@ -113,4 +113,5 @@ Contributions are welcome. Please open an issue to discuss changes or submit a p
 
 ## License
 
-This project is made available under the MIT License. See the `LICENSE` file for terms.
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
